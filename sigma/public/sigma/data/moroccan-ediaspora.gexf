@@ -1,0 +1,37 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" xmlns:viz="http://www.gexf.net/1.2draft/viz" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="http://www.gexf.net/1.2draft http://www.gexf.net/1.2draft/gexf.xsd">
+    <meta lastmodifieddate="2014-06-26">
+        <creator>Gephi 0.8.1</creator>
+        <description/>
+    </meta>
+    <graph defaultedgetype="directed" mode="static">
+        <attributes class="node" type="static">
+            <attribute id="acategory" title="Category" type="string"/>
+        </attributes>
+        <nodes>
+<?php $nodes = \App\Nodes::get();
+
+ ?>
+@foreach($nodes as $node)
+            <node id="1" label="Alzheimer disease" pid="0">
+                <attvalues>
+                    <attvalue for="acategory" value="business"/>
+                    
+                </attvalues>
+                <viz:position x="-116.486664" y="-126.38917" z="0.0"/>
+
+                <viz:color b="68" g="68" r="238"/>
+
+                <viz:size value="17.46866"/>
+
+            </node>
+@endforeach
+        </nodes>
+        <edges>
+           <?php $edges = \App\Edges::get();
+ ?>
+            @foreach($edges as $edge)
+            <edge source="1" target="1" cardinal="1"/>
+            @endforeach
+        </edges>
+    </graph>
+</gexf>
