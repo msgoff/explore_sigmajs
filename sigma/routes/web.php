@@ -16,4 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('/nodes', 'SigmaController@index');
+Route::get('New', 'SigmaController@sigmaNew');
 
