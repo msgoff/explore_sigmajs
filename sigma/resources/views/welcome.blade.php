@@ -274,6 +274,16 @@
     });
 
   }
+  
+  sigma.neo4j.cypher(
+            { url: 'http://neo4j:123456@localhost:7474', user: 'neo4j', password: '123456' },
+            'MATCH (n) MATCH (n) RETURN n LIMIT 25',
+            { container: 'graph-container' } ,
+            function(s) {
+                console.log(s.graph.nodes())
+                
+            }
+    );
 
   sigma.parsers.json("{{url('/nodes')}}", {
     container: 'graph-container',
