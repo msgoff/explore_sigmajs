@@ -69,20 +69,36 @@
 
         // Iteration on all result data
         result.results[0].data.forEach(function (data) {
-
+//console.log(data);
             // iteration on graph for all node
             data.graph.nodes.forEach(function (node) {
-
+                console.log(node);
+             if(node.labels[0] == 'Movie'){
                 var sigmaNode =  {
                     id : node.id,
-                    label : node.id,
+                    label : node.properties.title,
                     x : Math.random(),
                     y : Math.random(),
                     size : 1,
-                    color : '#000000',
+                    color : "#ffc454",
+                    picture : node.properties.picture,
                     neo4j_labels : node.labels,
                     neo4j_data : node.properties
-                };
+                }; 
+             }else{
+              var sigmaNode =  {
+                    id : node.id,
+                    label : node.properties.name,
+                    x : Math.random(),
+                    y : Math.random(),
+                    size : 1,
+                    color : "#8dcc93",
+                    picture : node.properties.picture,
+                    neo4j_labels : node.labels,
+                    neo4j_data : node.properties
+                };   
+             }
+                
 
                 if (sigmaNode.id in nodesMap) {
                     // do nothing
@@ -93,12 +109,13 @@
 
             // iteration on graph for all node
             data.graph.relationships.forEach(function (edge) {
+             //   console.log(edge);
                 var sigmaEdge =  {
                     id : edge.id,
                     label : edge.type,
                     source : edge.startNode,
                     target : edge.endNode,
-                    color : '#7D7C8E',
+                    color : '#e0336e',
                     neo4j_type : edge.type,
                     neo4j_data : edge.properties
                 };
