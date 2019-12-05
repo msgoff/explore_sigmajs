@@ -321,14 +321,7 @@ src="{{url('/sigma/plugins/sigma.plugins.neighborhoods/sigma.plugins.neighborhoo
     id('max-degree-value').textContent = maxDegree;
 
     // node category
-//    var nodecategoryElt = id('node-category');
 
-
-//    Object.keys(categories).forEach(function (c) {
-//      var optionElt = document.createElement("option");
-//      optionElt.text = c;
-//      nodecategoryElt.add(optionElt);
-//    });
     // reset button
     id('reset-btn').addEventListener("click", function (e) {
       id('min-degree').value = 0;
@@ -340,384 +333,109 @@ src="{{url('/sigma/plugins/sigma.plugins.neighborhoods/sigma.plugins.neighborhoo
 
   }
   
-  
+    function loaddata(val){
+        sigma.neo4j.cypher(
+    { url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
+
+
+val,
+{ container: 'graph-container' },
+        function(s) {
+      //  console.log(s.graph.nodes());
+//      console.log(s.graph.nodes());
+        var moviecount = [];
+        var personcount = [];
+        s.graph.nodes().forEach(function (node){
+          //      console.log(node.neo4j_data);
+          if(node.neo4j_labels[0] === 'Movie'){
+              moviecount.push(node);
+          }
+          else if(node.neo4j_labels[0] === 'Person'){
+              personcount.push(node);
+          }
+        });
+        
+        $(".person").text("person ("+personcount.length+")");
+         $(".Movie").text("movie ("+moviecount.length+")");
+        
+     
+        
+        // drag and drop function
+         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
+        dragListener.bind('startdrag', function (event) {
+
+        });
+        dragListener.bind('drag', function (event) {
+
+        });
+        dragListener.bind('drop', function (event) {
+
+        });
+        dragListener.bind('dragend', function (event) {
+
+        });
+        filter = new sigma.plugins.filter(s);
+    updatePane(s.graph, filter);
+    function applyMinDegreeFilter(e) {
+
+      var v = e.target.value;
+
+      id('min-degree-val').textContent = v;
+      filter
+        .undo('min-degree')
+        .nodesBy(function (n) {
+          return this.degree(n.id) >= v;
+        }, 'min-degree')
+        .apply();
+    }
+    function applyCategoryFilter(e) {
+      var c = e.target[e.target.selectedIndex].value;
+      filter
+        .undo('node-category')
+        .nodesBy(function (n) {
+          return !c.length || n.category.name === c;
+        }, 'node-category')
+        .apply();
+    }
+    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
+    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
+//    id('node-category').addEventListener("change", applyCategoryFilter);
+        });
+
+}  
+
+   
   
   $(document).ready(function(){
-      $(".button1").click(function(){
-          $("#graph-container").empty();
-          
-          sigma.neo4j.cypher(
-            { url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
-            'MATCH p=()-->() RETURN p LIMIT 25',
-            { container: 'graph-container' },
-        function(s) {
-            
-            console.log(s.graph.nodes());
-//            console.log(s.graph.nodes());
-
-        var moviecount = [];
-        var personcount = [];
-        s.graph.nodes().forEach(function (node){
-          //      console.log(node.neo4j_data);
-          if(node.neo4j_labels[0] === 'Movie'){
-              moviecount.push(node);
-          }
-          else if(node.neo4j_labels[0] === 'Person'){
-              personcount.push(node);
-          }
-        });
-        
-        $(".person").text("person ("+personcount.length+")");
-         $(".Movie").text("movie ("+moviecount.length+")");
-        
-        console.log(moviecount.length ,personcount.length)
-        
-        // drag and drop function
-         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        dragListener.bind('startdrag', function (event) {
-
-        });
-        dragListener.bind('drag', function (event) {
-
-        });
-        dragListener.bind('drop', function (event) {
-
-        });
-        dragListener.bind('dragend', function (event) {
-
-        });
-        filter = new sigma.plugins.filter(s);
-    updatePane(s.graph, filter);
-    function applyMinDegreeFilter(e) {
-
-      var v = e.target.value;
-
-      id('min-degree-val').textContent = v;
-      filter
-        .undo('min-degree')
-        .nodesBy(function (n) {
-          return this.degree(n.id) >= v;
-        }, 'min-degree')
-        .apply();
-    }
-    function applyCategoryFilter(e) {
-      var c = e.target[e.target.selectedIndex].value;
-      filter
-        .undo('node-category')
-        .nodesBy(function (n) {
-          return !c.length || n.category.name === c;
-        }, 'node-category')
-        .apply();
-    }
-    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
-    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
-//    id('node-category').addEventListener("change", applyCategoryFilter);
-        });
-        
-      })
       
-      
-      
-       $(".button2").click(function(){
-          $("#graph-container").empty();
-          
-          sigma.neo4j.cypher(
-            { url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
-                'MATCH (tom:Person {name: "Tom Hanks"})-[:ACTED_IN]->(tomHanksMovies) RETURN tom,tomHanksMovies',
-            { container: 'graph-container' },
-        function(s) {
-            
-            console.log(s.graph.nodes());
-//            console.log(s.graph.nodes());
+  
+    var def = 'MATCH p=()-->() RETURN p'; 
+    var one = 'MATCH p=()-->() RETURN p'; 
+    var two = 'MATCH p=()-->() RETURN p'; 
+    var three = 'MATCH p=()-->() RETURN p'; 
+    var four = 'MATCH p=()-->() RETURN p'; 
 
-        var moviecount = [];
-        var personcount = [];
-        s.graph.nodes().forEach(function (node){
-          //      console.log(node.neo4j_data);
-          if(node.neo4j_labels[0] === 'Movie'){
-              moviecount.push(node);
-          }
-          else if(node.neo4j_labels[0] === 'Person'){
-              personcount.push(node);
-          }
-        });
-        
-        $(".person").text("person ("+personcount.length+")");
-         $(".Movie").text("movie ("+moviecount.length+")");
-        
-        console.log(moviecount.length ,personcount.length)
-        
-        // drag and drop function
-         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        dragListener.bind('startdrag', function (event) {
+      loaddata(def);
 
-        });
-        dragListener.bind('drag', function (event) {
 
-        });
-        dragListener.bind('drop', function (event) {
-
-        });
-        dragListener.bind('dragend', function (event) {
-
-        });
-        filter = new sigma.plugins.filter(s);
-    updatePane(s.graph, filter);
-    function applyMinDegreeFilter(e) {
-
-      var v = e.target.value;
-
-      id('min-degree-val').textContent = v;
-      filter
-        .undo('min-degree')
-        .nodesBy(function (n) {
-          return this.degree(n.id) >= v;
-        }, 'min-degree')
-        .apply();
-    }
-    function applyCategoryFilter(e) {
-      var c = e.target[e.target.selectedIndex].value;
-      filter
-        .undo('node-category')
-        .nodesBy(function (n) {
-          return !c.length || n.category.name === c;
-        }, 'node-category')
-        .apply();
-    }
-    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
-    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
-//    id('node-category').addEventListener("change", applyCategoryFilter);
-        });
-        
-      })
-      
-      
-      
-       $(".button3").click(function(){
-          $("#graph-container").empty();
-          
-          sigma.neo4j.cypher(
-            { url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
-             'MATCH (tom:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors), (coActors)-[:ACTED_IN]->(m2)<-[:ACTED_IN]-(cruise:Person {name:"Tom Cruise"}) RETURN tom, m, coActors, m2, cruise',  
-            { container: 'graph-container' },
-        function(s) {
-            
-            console.log(s.graph.nodes());
-//            console.log(s.graph.nodes());
-
-        var moviecount = [];
-        var personcount = [];
-        s.graph.nodes().forEach(function (node){
-          //      console.log(node.neo4j_data);
-          if(node.neo4j_labels[0] === 'Movie'){
-              moviecount.push(node);
-          }
-          else if(node.neo4j_labels[0] === 'Person'){
-              personcount.push(node);
-          }
-        });
-        
-        $(".person").text("person ("+personcount.length+")");
-         $(".Movie").text("movie ("+moviecount.length+")");
-        
-        console.log(moviecount.length ,personcount.length)
-        
-        // drag and drop function
-         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        dragListener.bind('startdrag', function (event) {
-
-        });
-        dragListener.bind('drag', function (event) {
-
-        });
-        dragListener.bind('drop', function (event) {
-
-        });
-        dragListener.bind('dragend', function (event) {
-
-        });
-        filter = new sigma.plugins.filter(s);
-    updatePane(s.graph, filter);
-    function applyMinDegreeFilter(e) {
-
-      var v = e.target.value;
-
-      id('min-degree-val').textContent = v;
-      filter
-        .undo('min-degree')
-        .nodesBy(function (n) {
-          return this.degree(n.id) >= v;
-        }, 'min-degree')
-        .apply();
-    }
-    function applyCategoryFilter(e) {
-      var c = e.target[e.target.selectedIndex].value;
-      filter
-        .undo('node-category')
-        .nodesBy(function (n) {
-          return !c.length || n.category.name === c;
-        }, 'node-category')
-        .apply();
-    }
-    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
-    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
-//    id('node-category').addEventListener("change", applyCategoryFilter);
-        });
-        
-      })
-      
-      
-      
-       $(".button4").click(function(){
-          $("#graph-container").empty();
-          
-          sigma.neo4j.cypher(
-            { url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
-            'MATCH p=()-->() RETURN p LIMIT 25',
-            { container: 'graph-container' },
-        function(s) {
-            
-            console.log(s.graph.nodes());
-//            console.log(s.graph.nodes());
-
-        var moviecount = [];
-        var personcount = [];
-        s.graph.nodes().forEach(function (node){
-          //      console.log(node.neo4j_data);
-          if(node.neo4j_labels[0] === 'Movie'){
-              moviecount.push(node);
-          }
-          else if(node.neo4j_labels[0] === 'Person'){
-              personcount.push(node);
-          }
-        });
-        
-        $(".person").text("person ("+personcount.length+")");
-         $(".Movie").text("movie ("+moviecount.length+")");
-        
-        console.log(moviecount.length ,personcount.length)
-        
-        // drag and drop function
-         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        dragListener.bind('startdrag', function (event) {
-
-        });
-        dragListener.bind('drag', function (event) {
-
-        });
-        dragListener.bind('drop', function (event) {
-
-        });
-        dragListener.bind('dragend', function (event) {
-
-        });
-        filter = new sigma.plugins.filter(s);
-    updatePane(s.graph, filter);
-    function applyMinDegreeFilter(e) {
-
-      var v = e.target.value;
-
-      id('min-degree-val').textContent = v;
-      filter
-        .undo('min-degree')
-        .nodesBy(function (n) {
-          return this.degree(n.id) >= v;
-        }, 'min-degree')
-        .apply();
-    }
-    function applyCategoryFilter(e) {
-      var c = e.target[e.target.selectedIndex].value;
-      filter
-        .undo('node-category')
-        .nodesBy(function (n) {
-          return !c.length || n.category.name === c;
-        }, 'node-category')
-        .apply();
-    }
-    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
-    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
-//    id('node-category').addEventListener("change", applyCategoryFilter);
-        });
-        
-      })
+    $(".button1").click(function(){
+        $("#graph-container").empty();
+        loaddata(one);
+    });
+    $(".button2").click(function(){
+        $("#graph-container").empty();
+        loaddata(two);
+    });
+    $(".button3").click(function(){
+        $("#graph-container").empty();
+        loaddata(three);
+    });
+    $(".button4").click(function(){
+        $("#graph-container").empty();
+        loaddata(four);
+    });
   });
   
   
-sigma.neo4j.cypher(
-{ url: 'http://localhost:7474', user: 'neo4j', password: '123456' },
-
-
-//        'MATCH p=()-->() RETURN p LIMIT 25',
-//'MATCH (tom:Person {name: "Tom Hanks"})-[:ACTED_IN]->(tomHanksMovies) RETURN tom,tomHanksMovies',
-// 'MATCH (tom:Person {name:"Tom Hanks"})-[:ACTED_IN]->(m)<-[:ACTED_IN]-(coActors), (coActors)-[:ACTED_IN]->(m2)<-[:ACTED_IN]-(cruise:Person {name:"Tom Cruise"}) RETURN tom, m, coActors, m2, cruise',  
-//'MATCH p=()-->() RETURN p LIMIT 25',
-
-
-
-'MATCH p=()-[r:PRODUCED]->() RETURN p LIMIT 25',
-{ container: 'graph-container' },
-        function(s) {
-            console.log(s.graph.nodes());
-//            console.log(s.graph.nodes());
-
-        var moviecount = [];
-        var personcount = [];
-        s.graph.nodes().forEach(function (node){
-          //      console.log(node.neo4j_data);
-          if(node.neo4j_labels[0] === 'Movie'){
-              moviecount.push(node);
-          }
-          else if(node.neo4j_labels[0] === 'Person'){
-              personcount.push(node);
-          }
-        });
-        
-        $(".person").text("person ("+personcount.length+")");
-         $(".Movie").text("movie ("+moviecount.length+")");
-        
-        console.log(moviecount.length ,personcount.length)
-        
-        // drag and drop function
-         var dragListener = sigma.plugins.dragNodes(s, s.renderers[0]);
-        dragListener.bind('startdrag', function (event) {
-
-        });
-        dragListener.bind('drag', function (event) {
-
-        });
-        dragListener.bind('drop', function (event) {
-
-        });
-        dragListener.bind('dragend', function (event) {
-
-        });
-        filter = new sigma.plugins.filter(s);
-    updatePane(s.graph, filter);
-    function applyMinDegreeFilter(e) {
-
-      var v = e.target.value;
-
-      id('min-degree-val').textContent = v;
-      filter
-        .undo('min-degree')
-        .nodesBy(function (n) {
-          return this.degree(n.id) >= v;
-        }, 'min-degree')
-        .apply();
-    }
-    function applyCategoryFilter(e) {
-      var c = e.target[e.target.selectedIndex].value;
-      filter
-        .undo('node-category')
-        .nodesBy(function (n) {
-          return !c.length || n.category.name === c;
-        }, 'node-category')
-        .apply();
-    }
-    id('min-degree').addEventListener("input", applyMinDegreeFilter);  // for Chrome and FF
-    id('min-degree').addEventListener("change", applyMinDegreeFilter); // for IE10+, that sucks
-//    id('node-category').addEventListener("change", applyCategoryFilter);
-        });
-
-   
+  
 </script>

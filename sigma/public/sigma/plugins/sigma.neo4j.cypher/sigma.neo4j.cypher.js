@@ -73,7 +73,7 @@
             // iteration on graph for all node
             data.graph.nodes.forEach(function (node) {
                 console.log(node);
-             if(node.labels[0] == 'Movie'){
+             if(node.labels[0] == 'nodes'){
                 var sigmaNode =  {
                     id : node.id,
                     label : node.properties.title,
@@ -91,7 +91,7 @@
                     label : node.properties.name,
                     x : Math.random(),
                     y : Math.random(),
-                    size : 1,
+                    size : 0.01,
                     color : "#8dcc93",
                     picture : node.properties.picture,
                     neo4j_labels : node.labels,
