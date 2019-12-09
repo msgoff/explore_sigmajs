@@ -19,6 +19,8 @@ open in ocaml shell using  #use "parser.ml";;
  let t =  tokenizer "3+4+5";;
 
 #tok_list = t;;
+
+
 (*check tok_list*)
 
 !tok_list;;
