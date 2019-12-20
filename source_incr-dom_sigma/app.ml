@@ -100,11 +100,26 @@ let clear_button =
     ()
 ;;
 
-
+let mathml_container =
+  
+  let widget_id =
+    Type_equal.Id.create ~name:"my widget type" (fun _ -> Sexp.Atom "<my widget type>")
+  in
+  Vdom.Node.widget
+    ~id:widget_id
+    ~init:(fun () ->
+      let div = Dom_html.document##createElement ("div" |> Js.string) in
+     div##.id := Js.string "mathml-container";
+     
+         let pushnode = Js.Unsafe.get Dom_html.window ("pushnode" |> Js.string) in
+          Js.Unsafe.fun_call pushnode [| Js.Unsafe.inject div |] |> ignore;
+      (), div)
+    ()
+;;
 
 
 let view _ ~inject:_ =
-  Incr.return (Vdom.Node.div [] [view_input; node_submit_button;graph_container; clear_button])
+  Incr.return (Vdom.Node.div [] [view_input; node_submit_button;graph_container; clear_button; mathml_container])
 ;;
 
 let create model ~old_model:_ ~inject =
