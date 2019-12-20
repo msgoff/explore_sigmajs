@@ -1,0 +1,7 @@
+https://developer.mozilla.org/en-US/docs/Web/MathML/Element  
+
+https://ask.sagemath.org/question/8097/parse-and-evaluate-mathml/  
+
+http://mathparser.org/  
+
+https://dlmf.nist.gov/LaTeXML/get.html  
