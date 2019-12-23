@@ -103,18 +103,7 @@ window.pushnode = function(dom_node){
 		  container: 'graph-container'
 		});*/
 		
-		var b3b = JXG.JSXGraph.initBoard('graph-container', {boundingbox: [-1, 2.5, 14, -2.5]});
-    	
-    	var a = b3b.create('point',[num,num], {name:$(elements[4]).html(),face:'o', size:3}); 
-    	
 
-
-		num = num + 1;
-		console.log(b3b)
-
-		}
-
-	}
 
 	if(elements[3]){
 		elements[3].onclick = function(){
@@ -126,16 +115,3 @@ window.pushnode = function(dom_node){
 
     
 }
-function removeCSSFallback()
-{
-  var ua = navigator.userAgent;
-  var isGecko = ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') === -1 && ua.indexOf('Trident') === -1;
-  var isWebKit = ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') === -1;
-  if (isGecko || isWebKit) {
-    document.head.removeChild(document.querySelector("style"));
-  } else {
-    console.log("MathML Not Supported!");
-  }
-}
-
-window.addEventListener("DOMContentLoaded", removeCSSFallback, false);
