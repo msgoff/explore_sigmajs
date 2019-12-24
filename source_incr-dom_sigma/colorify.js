@@ -24,37 +24,6 @@ function getUnique(arr, comp) {
 	   return unique;
 	}
 	
-function getDOM(xmlstring) {
-    parser=new DOMParser();
-    return parser.parseFromString(xmlstring, "text/xml");
-}
-
-function remove_tags(node) {
-    var result = "";
-    var nodes = node.childNodes;
-    var tagName = node.tagName;
-    if (!nodes.length) {
-        if (node.nodeValue == "π") result = "pi";
-        else if (node.nodeValue == " ") result = "";
-        else result = node.nodeValue;
-    } else if (tagName == "mfrac") {
-        result = "("+remove_tags(nodes[0])+")/("+remove_tags(nodes[1])+")";
-    } else if (tagName == "msup") {
-        result = "Math.pow(("+remove_tags(nodes[0])+"),("+remove_tags(nodes[1])+"))";
-    } else for (var i = 0; i < nodes.length; ++i) {
-        result += remove_tags(nodes[i]);
-    }
-
-    if (tagName == "mfenced") result = "("+result+")";
-    if (tagName == "msqrt") result = "Math.sqrt("+result+")";
-
-    return result;
-}
-function stringifyMathML(mml) {
-   xmlDoc = getDOM(mml);
-   return remove_tags(xmlDoc.documentElement);
-}
-
 	  
 window.pushnode = function(dom_node){
 	elements.push(dom_node);
@@ -66,43 +35,124 @@ window.pushnode = function(dom_node){
 			$("#graph-container").empty();
 			var mathmlvalue = $("#node-input").val();
 			$(elements[4]).html(mathmlvalue);
-// start using parsing
-/*
-            var mathmltext1 = stringifyMathML(mathmlvalue).replace(/\s+/g, '');
-		    console.log(mathmltext1);
-*/
-// end using parsing
 
-//start using js
 
-			$("msqrt").prepend("&radic;");
-			$("mfrac").children().first().after(" / ");
-			$("mrow").append(")").prepend("(");
 			var mathmltext = $(elements[4]).text().replace(/\s+/g, '');
 		        mathmltext1 = mathmltext.replace('/', '  /  ');
-//end using js		      
-
-			var newnode = {
-				id: 'n'+mathmltext,
-				label:mathmltext,
-				x:Math.random(),
-				y:Math.random(),
+		        
+        sigma.utils.pkg('sigma.settings');
+		     var settings = {
+		     drawLabels: false,
+		   };
+​
+​
+		  sigma.utils.pkg('sigma.canvas.nodes');
+​
+		  sigma.canvas.nodes.def = function(node, context, settings) { 
+		    var prefix = settings('prefix') || '';
+		    context.fillStyle = node.color || settings('defaultNodeColor');
+		    context.beginPath();
+		    context.arc(
+		      node[prefix + 'x'],
+		      node[prefix + 'y'],
+		      node[prefix + 'size'],
+		      0,
+		      Math.PI * 2,
+		      true
+		    );
+		    context.closePath();
+		    context.fill();
+		      x_pos = node[prefix + 'x'] + 10;
+		      y_pos = (node[prefix + 'y'] + 4) + 147;
+		      var oldlabel = document.getElementById("lbl"+node['id']);
+		      if(oldlabel)
+		      {
+		        oldlabel.remove();
+		      }  
+​
+		      var label = document.createElement("label");
+		      label.setAttribute("id", "lbl"+node['id']);
+		      label.style.position = "absolute";
+		      label.style.left = x_pos+'px';
+		      label.style.top = y_pos +'px';
+		      label.innerHTML = node['label'];                   
+		      document.body.appendChild(label);
+		  };
+​
+​
+		  sigma.utils.pkg('sigma.canvas.labels');
+​
+		  sigma.canvas.labels.def = function(node, context, settings) {
+		    var fontSize,
+		        prefix = settings('prefix') || '',
+		        size = node[prefix + 'size'];
+		  
+​
+		    if (size < settings('labelThreshold'))
+		      return;
+​
+		    if (!node.label || typeof node.label !== 'string')
+		      return;
+​
+		    fontSize = (settings('labelSize') === 'fixed') ?
+		      settings('defaultLabelSize') :
+		      settings('labelSizeRatio') * size;
+​
+		    context.font = (settings('fontStyle') ? settings('fontStyle') + ' ' : '') +
+		      fontSize + 'px ' + settings('font');
+		    context.fillStyle = (settings('labelColor') === 'node') ?
+		      (node.color || settings('defaultNodeColor')) :
+		      settings('defaultLabelColor');
+		              
+​
+		    context.fillText(
+		      node.label, 
+		      Math.round(node[prefix + 'x'] + size + 3),
+		      Math.round(node[prefix + 'y'] + fontSize / 3)
+		    );
+		  };
+​
+​
+​
+		nodeLabel.push(mathmlvalue);
+​
+			if(g.nodes.length === 0){
+				var i = 0;
+			}
+			else{
+				var i = g.nodes.length;
+			}
+		var newnode
+			 = {
+				id: 'n'+i,
+				label:mathmlvalue,
+				x:i*0.2,
+				y:i*0.2,
 				size:2,
 				color:"#000"
 			}
-
+​
+​
 			g.nodes.push(newnode);
-
+​
 			elements[0].value = "";
-		console.log(g)
-		g.nodes = getUnique(g.nodes,'id');
-		g.edges = getUnique(g.edges,'id');
-
-	/*	s = new sigma({
+			console.log(g)
+			g.nodes = getUnique(g.nodes,'id');
+			g.edges = getUnique(g.edges,'id');
+​
+​
+		s = new sigma({
 		  graph: g,
-		  container: 'graph-container'
-		});*/
-		
+		  renderer: {
+		    container: 'graph-container',
+		    "settings" : settings,
+		    type: 'canvas'
+		  }
+		});
+​
+		}
+​
+	}
 
 
 	if(elements[3]){
