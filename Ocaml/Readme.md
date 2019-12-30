@@ -1,17 +1,13 @@
 Example 1
 
-complile file main.mll (mll extenstion because lexer)
 #ocamllex main.mll
-(*This command will generate .ml file*)
+
 #ocamlopt -o main main.ml
-(*This complies the file*)
 
-Note create another file in same director example data.cl 
-
-and paste random integer like 74284 +++ (only integrer  and plus else programm through an error)
-
-run ./main filename
-ex. ./main data.cl
+add expressions to data.cl  
+   such as 1+2  
+   
+./main data.cl  
 
 Example 2.
 
