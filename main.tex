@@ -298,6 +298,45 @@ insert function checks element is present in list if not the insert that element
 \\
 Union returns a list consisting of the elements of l1 not already in l2 concatenated with l2\\
 
+\pagebreak
+
+\textbf{13-01-2020}\\
+\\
+Worked on compiling an \texttt{incr\_dom} dom file with HOL Light and intro.ml.
+First checked how to compile \texttt{incr\_dom} with file HOL light and use input from
+web to HOL light and print result on web.\\
+\\
+As hol light consist of lots of files and so currently i dont know how
+pass web input to Hol light.\\
+\\
+In order to work with hol light theorem prover first i have tested how to use
+\texttt{incr\_dom}  with intro.ml\\
+\\
+\\
+Used files:\\
+\\
+Intro.ml from sml handbook\\
+\texttt{Input\_text} example code from \texttt{incr\_dom}
+\\
+code line: app.ml 13,20,75
+
+Issue Faced:
+\texttt{incr\_dom} examples are not compiling with Hol light
+\\ 
+ unused variables issue when compiling with inro.ml
+ \\
+ Solutiton worked
+\\ 
+\begin{verbatim}
+
+dune  build example/text_input/{main.bc.js,index.html} --profile release
+\end{verbatim}
+\\
+Use above command to build project
+
+
+\includegraphics[scale = .5]{images/image8.png}
+
 	
 \end{document}
 
