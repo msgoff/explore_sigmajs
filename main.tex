@@ -6,11 +6,31 @@
 \section{Index}
 \begin{enumerate}
 \item Project Specification 
-\item How to acheieve it 
-\item Technolgies
+\item How to achieve it 
+\item Technologies
 \item Real analysis
 \item Tools
 \end{enumerate}
+\\
+Project Repository
+\\
+\begin{verbatim}
+https://github.com/msgoff/explore_sigmajs.git
+\end{verbatim}
+
+\textbf{Folders}
+\\
+\textbf{sigma}: This is folder have Laravel code with Neo4j, Pogtress db.
+Learning Sigma js with databases.
+\\
+\textbf{\texttt{source\_incr-dom\_sigma}}  This folder contains code tp display Mathml on Node using Sigma js and D3 js Library.
+Code example taken from \texttt{incr\_dom} library
+
+\textbf{\texttt{text\_input}} This folder contains code to compile 
+and use intro.ml with \texttt{incr\_dom}.
+Giving input from html page and see simplifies AST on that HTML page
+
+
 \pagebreak 
 \section{Project Specification}
 
@@ -79,14 +99,26 @@ The set of real numbers are consist of different categories, such as, natural an
 Study of Real number system:
 \begin{enumerate}
 
-\item Natural Number: 1 to infinte also called countuing numbers
+\item Natural Number: 1 to infinite also called counting numbers
  Whole Numbers: 0, 1,2 ... to infinite
-\item Intgers:  negative infinite .... 0.... Poistive infinite 
+\item Integer's:  negative infinite .... 0.... Positive infinite 
 \item Rational number:  denoted By Q = $\frac{p}{q}$ where \item q is not equal to zero and p,q must be integers and p,q must not have any common factors
-\item Irratiional number: Which cannot be represnted on p/q form like root 2
+\item Irrational number: Which cannot be represented on p/q form like root 2
 
 \end{enumerate}
 
+\paragraph{Closure}
+A set is closed under an operation if performance of that operation on members of the set always produces a member of that set.\\
+\textbf{example:} Integers are closed under addition but not under subtraction.
+$$ 1+2 = 3 ; 993+2 =  995 $$
+$$ 1-2 = -1 $$ Natural numbers are not closed under subtraction   
+\\
+\\
+ A set is said to be closed under a collection of operations if it is closed under each of the operations individually.
+
+
+
+ 
 \paragraph{Cauchy Sequence }
 A sequence is said to be a cauchy sequence  for every epsilon greater than zero.There is a positive integer $m          m, n > N then |am- an| < ε. \forall  m>n$ \\
 \\
@@ -105,6 +137,38 @@ Constructing Real numbers with Peano’s Axiom
 \item If two numbers have the same successor then they must be the same number.
 \item Given a set S, if 1 belongs to S and contains the successor of any number in S then S must contain all of the natural numbers.\\
 \end{enumerate}
+
+\textbf{Construction of Integers }
+We assume that the set of natural numbers
+\\
+$$ \mathbb{N} =  \{0,1,2,3,4...\} $$
+\\
+Subtraction. Subtraction is defined as the inverse operation to addition.
+By definition, $a − b$ is a number x such that $x + b = a$. In other words, a − b is a solution to the equation
+$$x + b = a$$
+
+
+\begin{enumerate}
+    \item Consider the set N\times N of ordered pairs of natural numbers $\mathbb{N}^2  (\mathbb{N} \times \mathbb{N}
+    
+    So the elements of this set are ordered pair natural numbers
+
+    \item  . Consider the equivalence relation ∼ on this set defined by
+       $(m, n)$ equivalent  if and only if $ m + q = n + p$
+       
+    \item The equivalence classes from this equivalence relations
+    are \textbf{integer's}
+    
+    \item We can define additions and multiplications on these equivalnce classes
+    
+  $$  [(m, n)] + [(p, q)] = [(m + p, n + q)] $$
+  
+   And Mutiplication
+  
+  $$  [(m, n)] · [(p, q)] = [(mp + nq, np + mq)] $$
+\end{enumerate}
+
+
 
 \textbf{Some basic definition:}
 
@@ -191,6 +255,19 @@ val it : hol_type = ‘:bool‘
 
 \item \textbf{Theorems}\\
  A specialtypethm(‘theorem’) is used for formulas
+ 
+\textbf{REFL}
+\begin{verbatim}
+    # let th1 = REFL ‘x + 1‘;;
+val th1 : thm = |- x + 1 = x + 1
+\end{verbatim}
+
+
+\textbf{ASSUME}
+\begin{verbatim}
+# let th2 = ASSUME ‘2 * n = n + n‘;;
+val th2 : thm = 2 * n = n + n |- 2 * n = n + n
+\end{verbatim}
 
 
 \begin{verbatim}
@@ -199,7 +276,48 @@ val it : thm = |- x = x
 # let th1 = REFL ‘x + 1‘;;
 val th1 : thm = |- x + 1 = x + 1
 \end{verbatim}
+
+\item \textbf{tautologies}\\
+
+A formula of propositional logic is a tautology if the formula itself is always true regardless of which valuation is used for the propositional variables.
+
+\\
+Symbols used in HOL light
+
+\begin{center}
+\begin{tabular}{ |c|c|c| } 
+ \hline
+\⊥\ & F & Falsity\\
+> & T & Truth\\
+¬& ˜ & Not\\
+∧ & /\ &And\\
+∨& \/ & Or\\
+⇒ & ==\>\ & Implies (‘if . . . then . . . ’)\\
+⇔ & <=> & Iff (‘. . . if and only if . . . ’)\\
+
+
+\begin{verbatim}
+    # TAUT ‘(p <=> q) <=> (p ==> q) /\ (q ==> p)‘;;
+val it : thm = |- (p <=> q) <=> (p ==> q) /\ (q ==> p)
+\end{verbatim}
+
+The following says that ‘p if and only if q’ is equivalent to ‘if p then q’ and ‘if q
+then p’ together
+
+\begin{verbatim}
+    # TAUT ‘p \/ q ==> p /\ q‘;;
+Exception: Failure "REFINEMENT_PROOF: Unsolved goals".
+
+TAUT  `p \/ p `;;
+Returns -> Exception: Failure "TAC_PROOF: Unsolved goals".
+
+\end{verbatim}
+If the user supplies a non-tautology to TAUT then it will simply fail to return a
+theorem at all:
+
 \end{enumerate}
+
+
 
 
 HOL Light Code 
@@ -333,6 +451,15 @@ dune  build example/text_input/{main.bc.js,index.html} --profile release
 \end{verbatim}
 \\
 Use above command to build project
+
+\textbf{14-01-2020}\\
+
+Improved Document 
+Studied Hol light Pages from 40 to 52 Studing how to proof summation of n natural numbers
+
+Worked on incr-dom with js of ocaml 
+
+Dont have any code to update right now
 
 
 \includegraphics[scale = .5]{images/image8.png}
