@@ -5,3 +5,5 @@ https://ask.sagemath.org/question/8097/parse-and-evaluate-mathml/
 http://mathparser.org/  
 
 https://dlmf.nist.gov/LaTeXML/get.html  
+
+https://sites.math.rutgers.edu/~zeilberg/mamarim/  
