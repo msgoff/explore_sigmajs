@@ -464,6 +464,31 @@ Dont have any code to update right now
 
 \includegraphics[scale = .5]{images/image8.png}
 
+
+1.Working on js_of_ocaml with incr_dom\\
+Reason: Need to call the sigma graph rendering function from incr_dom so that we can render every step of simplified equation as a node\\
+Step1.Defining a js library having function to render sigma graph\\
+Step2.Making that libarary call from incr_dom so that we can pass list of simplification steps to that library so as to display those as nodes\\
+
+Reference Examples -> 
+1.Git -> https://github.com/janestreet/incr_dom/tree/master/example/widget_raw_html\\
+2.Git -> https://github.com/AngryLawyer/js_of_ocaml_playground/tree/master/simple_js_bind\\
+3.Ocsigen Js_of_ocaml -> https://ocsigen.org/js_of_ocaml/3.5.1/manual/bindings\\
+\\
+Progress Made\\
+1.Able to console log a string using -> Firebug.console##log (Js.string "Test Console Log");
+Js\\
+2.Making an alert using (Js.Unsafe.fun_call (Js.Unsafe.js_expr "alert") [|Js.Unsafe.inject (Js.string "Test Alert")|]);\\
+3.Making an alert using windows global object (Js.Unsafe.fun_call (Js.Unsafe.js_expr "alert") [|Js.Unsafe.inject (Js.string "Test Alert")|]);
+4.Decoding a URI using "descodeURI" js function \\
+i/p -> test.php?name=pal#$h&credentials=freel%5Eancer ,o/p -> test.php?name=pal#$h&credentials=freel^ancer 
+\\
+Issues
+1. Unable to call renderGraph using \\
+ -> Js.Unsafe.fun_call ((Js.Unsafe.js_expr "window")##.renderGraph) [|Js.Unsafe.inject (Js.string "NBN")|] , where renderGraph is a global function attached to windows object , getting error Uncaught TypeError: window.renderGraph is not a function
+
+
+\\
 	
 \end{document}
 
