@@ -488,6 +488,48 @@ Issues
  -> Js.Unsafe.fun_call ((Js.Unsafe.js_expr "window")##.renderGraph) [|Js.Unsafe.inject (Js.string "NBN")|] , where renderGraph is a global function attached to windows object , getting error Uncaught TypeError: window.renderGraph is not a function
 
 
+
+26-27 Jan 2020
+
+\\As in Incr_dom's text_input example,external js library can't be used so using widget_raw_html as example to render sigma graph
+\\Reason: It's written in the link : https://github.com/janestreet/incr_dom/tree/master/example/widget_raw_html
+\\When interaction with third-party Javascript plugins is necessary.
+
+\\1.Add Vdom.Node.div with id "graph-container" in app.ml
+\\2.Changed button text to "Render Graph" in app.ml
+\\3.Include all the files of sigma library in index.html 
+\\4.Customize colorify.js library to call sigma graph initiation function
+\\5.The button seems to be unclickable because of graph container css but can be fixed by changing top: 0; to top: 50px; in index.html      
+
+\\Now we have to pass nodes data from app.ml to sigma library so we can make graph dynamic and make it display our nodes 
+\\1.Checked by passing js array to library using `Js.Unsafe.inject (Js.array [|"x+1+2+3";"y+1+2*3";"z+1*3-5"|])` as second argument in app.ml
+
+\\2.No we simply have to use intro.ml file to get the simplified steps in a string list which we can get using function "simplification_list" function in intro.ml that take string as an argument
+
+\\3.Putting file in incr_dom src folder and define it as module in incr_dom.ml
+like -> module Intro = Intro
+
+\\4.Calling simplification_list function from widget's app.ml 
+like -> Intro.simplification_list "x+1+3+4"
+above will return string list 
+and pass that string list to "convert_lst_to_arr" to get an array of strings which eventually will be passed to sigma graph initiation function as an array
+
+
+Studied Topics:
+
+Module,Structur,signatur and functors in ocaml
+
+https://caml.inria.fr/pub/docs/manual-ocaml/moduleexamples.html
+
+https://ocaml.org/learn/tutorials/modules.html
+
+https://www.cs.cornell.edu/courses/cs3110/2018sp/l/08-functors/notes.html
+
+
+Other studying URLs
+https://ocamlverse.github.io/content/weak_type_variables.html
+
+
 \\
 	
 \end{document}
